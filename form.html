@@ -15,7 +15,7 @@
     <main>
       <form id="form">
         <fieldset>
-          <div class="input-label">
+          <div class="input-label input-name-div">
             <label id="label-name" for="name"> Nome Completo </label>
             <input
               type="text"
@@ -28,8 +28,9 @@
               required
               autofocus
             />
+            <p class="text-error text-error-name"></p>
           </div>
-          <div class="input-label">
+          <div class="input-label input-phone-div">
             <label id="label-phone" for="phone">
               Telefone (celular ou fixo)
             </label>
@@ -44,7 +45,7 @@
               required
             />
           </div>
-          <div class="input-label">
+          <div class="input-label input-email-div">
             <label id="label-email" for="email"> Email </label>
             <input
               type="text"
@@ -54,10 +55,11 @@
               pattern="^[\w]+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
               required
             />
+            <p class="text-error text-error-email"></p>
           </div>
 
-          <div class="input-label">
-            <label id="label-number" for="number"> Número </label>
+          <div class="input-label input-number-div">
+            <label id="label-number" for="number"> Número (1-999)</label>
             <input
               type="number"
               name="number"
@@ -65,9 +67,10 @@
               pattern="^[0-9]{1,3}"
               min="1"
               max="999"
-              placeholder="Digite um número de 1 a 999"
+              placeholder="Digite um número entre 1 e 999"
               required
             />
+            <p class="text-error text-error-number"></p>
           </div>
           <button type="submit" id="submit">Enviar</button>
         </fieldset>
