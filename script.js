@@ -169,7 +169,7 @@ const formResponseResults = () => {
     question.innerHTML = `O número ${number} é divisível por 3:`;
     content.innerHTML = `Primeiro Nome: <span style="text-transform: capitalize" >${firstName}</span>`;
   } else if (inputData.number % 5 === 0) {
-    const dddPhone = phone.substring(2, 4);
+    const dddPhone = phone.substring(1, 3);
     question.innerHTML = `O número ${number} é divisível por 5:`;
     content.innerHTML = `DDD do Telefone: <span>${dddPhone}</span>`;
   } else if (inputData.number % 7 === 0) {
