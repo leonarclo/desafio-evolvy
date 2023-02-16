@@ -36,8 +36,7 @@ Formulário desenvolvido como teste técnico, com o intuito de mostrar algumas d
 
 ### 2. Receber os dados e fornecer a resposta para:
 
-#### 2.1 Se (Número é divisível por 3) então imprimir o Primeiro Nome
-
+- Se (Número é divisível por 3) então imprimir o Primeiro Nome
 - Se (Número é divisível por 5) então imprimir o DDD do Telefone
 - Se (Número é divisível por 7) então imprimir o domínio do e-mail
 - Se nenhuma situação anterior, imprimir as respostas para as lógicas dos itens 2.2 e 2.3.
