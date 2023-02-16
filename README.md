@@ -5,7 +5,6 @@
 <p align="center">
   <img src="https://img.shields.io/github/repo-size/leonarclo/desafio-evolvy">
   <img src="https://img.shields.io/github/last-commit/leonarclo/desafio-evolvy">
-  <img src="https://img.shields.io/github/license/leonarclo/desafio-evolvy">
 </p>
 
 ---
@@ -28,10 +27,10 @@ Formulário desenvolvido como teste técnico, com o intuito de mostrar algumas d
 
 #### Campos:
 
-- [-] Nome Completo: Aceita apenas Letras (até 100 caracteres)
-- [-] Telefone: Máscara para Telefone Celular e Fixo
-- [-] E-mail: Verifica se é um e-mail válido
-- [-] Número: Aceitar número de 1 a 999
+- Nome Completo: Aceita apenas Letras (até 100 caracteres)
+- Telefone: Máscara para Telefone Celular e Fixo
+- E-mail: Verifica se é um e-mail válido
+- Número: Aceitar número de 1 a 999
 
 #### Botão Enviar
 
@@ -39,9 +38,9 @@ Formulário desenvolvido como teste técnico, com o intuito de mostrar algumas d
 
 #### 2.1 Se (Número é divisível por 3) então imprimir o Primeiro Nome
 
-- [-] Se (Número é divisível por 5) então imprimir o DDD do Telefone
-- [-] Se (Número é divisível por 7) então imprimir o domínio do e-mail
-- [-] Se nenhuma situação anterior, imprimir as respostas para as lógicas dos itens 2.2 e 2.3.
+- Se (Número é divisível por 5) então imprimir o DDD do Telefone
+- Se (Número é divisível por 7) então imprimir o domínio do e-mail
+- Se nenhuma situação anterior, imprimir as respostas para as lógicas dos itens 2.2 e 2.3.
 
 #### 2.2) Quantidade de letras do Nome Completo, excluindo os espaços.
 
