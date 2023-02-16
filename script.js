@@ -1,22 +1,34 @@
-//Seletores da Página de Formulário
-const inputName = document.querySelector("#name");
-const labelName = document.querySelector("#label-name");
-const textErrorName = document.querySelector(".text-error-name");
-const inputPhone = document.querySelector("#phone");
-const labelPhone = document.querySelector("#label-phone");
-const inputEmail = document.querySelector("#email");
-const labelEmail = document.querySelector("#label-email");
-const textErrorEmail = document.querySelector(".text-error-email");
-const inputNumber = document.querySelector("#number");
-const labelNumber = document.querySelector("#label-number");
-const textErrorNumber = document.querySelector(".text-error-number");
-const submit = document.querySelector("#submit");
+//Seletores dos inputs do Formulário
+const fullName = {
+  input: document.querySelector("#name"),
+  label: document.querySelector("#label-name"),
+  error: document.querySelector(".text-error-name"),
+};
+const phone = {
+  input: document.querySelector("#phone"),
+  label: document.querySelector("#label-phone"),
+  error: document.querySelector(".text-error-phone"),
+};
+const email = {
+  input: document.querySelector("#email"),
+  label: document.querySelector("#label-email"),
+  error: document.querySelector(".text-error-email"),
+};
+const number = {
+  input: document.querySelector("#number"),
+  label: document.querySelector("#label-number"),
+  error: document.querySelector(".text-error-number"),
+};
 const form = document.querySelector("#form");
 // Seletores da Página de Resultados
 const content = document.querySelector(".content");
 const question = document.querySelector(".question");
-// Seletor do objeto com o valor dos inputs
-const inputData = JSON.parse(localStorage.getItem("formData"));
+// Seletores do loader
+const loaderContainer = document.querySelector(".loader-container");
+const loader = document.querySelector(".loader");
+
+const formPage = document.querySelector("#form-page");
+const resultsPAge = document.querySelector("#results-page");
 
 // Constantes Regex
 const REGEX_LETTERS_ONLY = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/;
@@ -25,132 +37,151 @@ const REGEX_NAME_FORMAT =
 const REGEX_EMAIL_FORMAT = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const REGEX_PHONE_FORMAT = /^\d{10,11}$/;
 
-// Funções de validação visual
-const validStyle = (label, border) => {
+// Funções de Validação por Estilização
+const setValidStyle = (label, border, error) => {
   label.setAttribute("style", "color: green");
   border.setAttribute("style", "border-color: green");
+  error.textContent = "";
 };
 
-const invalidStyle = (label, border) => {
+const setInvalidStyle = (label, border, error, errorMessage) => {
   label.setAttribute("style", "color: red");
   border.setAttribute("style", "border-color: red");
+  error.innerHTML = `${errorMessage}`;
 };
 
-const defaultStyle = (label, border) => {
+const setDefaultStyle = (label, border, error) => {
   label.setAttribute("style", "color: black");
   border.setAttribute("style", "border-color: none");
+  error.textContent = "";
 };
+// Função de validação do Nome Completo
+const validateFullNameInputField = () => {
+  const trimmedFullName = fullName.input.value.trim();
 
-// Funções de validação dos inputs
-const fullNameValidation = () => {
-  const inputNameTrim = inputName.value.trim();
-
-  if (!inputNameTrim.match(REGEX_LETTERS_ONLY) && inputNameTrim.length > 0) {
-    invalidStyle(labelName, inputName);
-    textErrorName.innerHTML = "Por favor, utilize apenas letras e espaços.";
-  } else if (
-    !inputNameTrim.match(REGEX_LETTERS_ONLY) ||
-    !inputNameTrim.match(REGEX_NAME_FORMAT)
-  ) {
-    defaultStyle(labelName, inputName);
-    textErrorName.innerHTML = "";
-  } else {
-    validStyle(labelName, inputName);
-    textErrorName.innerHTML = "";
-  }
-};
-
-let number;
-const phoneValidation = () => {
-  number = inputPhone.value.replace(/\D/g, "");
-  if (number.length >= 10) {
-    validStyle(labelPhone, inputPhone);
-    number.length === 10
-      ? (number = number.replace(/^(\d\d)(\d{4})(\d{4}).*/, "($1) $2-$3"))
-      : (number = number.replace(/^(\d\d)(\d{5})(\d{4}).*/, "($1) $2-$3"));
-  } else {
-    defaultStyle(labelPhone, inputPhone);
-  }
-  inputPhone.value = number;
-};
-
-const emailValidation = () => {
-  if (inputEmail.value.match(REGEX_EMAIL_FORMAT)) {
-    validStyle(labelEmail, inputEmail);
-    textErrorEmail.innerHTML = "";
-  } else {
-    defaultStyle(labelEmail, inputEmail);
-    textErrorEmail.innerHTML = "";
-  }
-};
-
-const checkEmailValidation = () => {
   if (
-    !inputEmail.value.match(REGEX_EMAIL_FORMAT) &&
-    inputEmail.value.length > 0
+    !trimmedFullName.match(REGEX_LETTERS_ONLY) &&
+    trimmedFullName.length > 0
   ) {
-    invalidStyle(labelEmail, inputEmail);
-    textErrorEmail.innerHTML = "Por favor, insira um email válido.";
+    setInvalidStyle(
+      fullName.label,
+      fullName.input,
+      fullName.error,
+      "Por favor, utilize apenas letras e espaços."
+    );
+    return;
+  }
+  if (
+    !trimmedFullName.match(REGEX_LETTERS_ONLY) ||
+    !trimmedFullName.match(REGEX_NAME_FORMAT)
+  ) {
+    setDefaultStyle(fullName.label, fullName.input, fullName.error);
+    return;
+  }
+  setValidStyle(fullName.label, fullName.input, fullName.error);
+  fullName.input.removeEventListener("input", validateFullNameInputField);
+};
+
+// Funções de validação do Número de Telefone
+
+const validatePhoneNumberInputField = () => {
+  const number = phone.input.value.replace(/\D/g, "");
+  const formattedNumber = number.replace(
+    /^(\d{2})(\d{4,5})(\d{4}).*/,
+    "($1) $2-$3"
+  );
+  phone.input.value = formattedNumber;
+  if (number.length >= 10) {
+    setValidStyle(phone.label, phone.input, phone.error);
+  } else {
+    setDefaultStyle(phone.label, phone.input, phone.error);
   }
 };
 
-const numberValidation = () => {
-  if (inputNumber.value > 0 && inputNumber.value <= 999) {
-    validStyle(labelNumber, inputNumber);
-  } else if (inputNumber.value > 0 && inputNumber.value > 999) {
-    invalidStyle(labelNumber, inputNumber);
+// Funções de validação do Endereço de Email
+const validateEmailInputField = () => {
+  if (email.input.value.match(REGEX_EMAIL_FORMAT)) {
+    setValidStyle(email.label, email.input, email.error);
   } else {
-    defaultStyle(labelNumber, inputNumber);
+    setDefaultStyle(email.label, email.input, email.error);
+  }
+};
+
+const checkValidateEmailInputField = () => {
+  if (
+    !email.input.value.match(REGEX_EMAIL_FORMAT) &&
+    email.input.value.length > 0
+  ) {
+    setInvalidStyle(
+      email.label,
+      email.input,
+      email.error,
+      "Por favor, insira um endereço de email válido."
+    );
+  }
+};
+
+const validateNumberInputField = () => {
+  if (number.input.value > 0 && number.input.value <= 999) {
+    setValidStyle(number.label, number.input, number.error);
+  } else if (number.input.value > 999) {
+    setInvalidStyle(
+      number.label,
+      number.input,
+      number.error,
+      "Por favor, utilize apenas números entre 1 e 999"
+    );
+  } else {
+    setDefaultStyle(number.label, number.input, number.error);
   }
 };
 
 // Função para salvar os valores dos inputs
 const saveFormResponses = (event) => {
   event.preventDefault();
-  if (
-    inputName.value &&
-    inputPhone.value &&
-    inputEmail.value &&
-    inputNumber.value
-  ) {
-    let formData = JSON.parse(localStorage.getItem("formData") || "[]");
 
-    formData = {
-      name: inputName.value.toLowerCase(),
-      phone: inputPhone.value,
-      email: inputEmail.value.toLowerCase(),
-      number: inputNumber.value,
-    };
-    localStorage.setItem("formData", JSON.stringify(formData));
-    window.location.href = "/result.html";
-  }
+  let formData = JSON.parse(localStorage.getItem("formData") || "[]");
+
+  formData = {
+    fullName: fullName.input.value.toLowerCase(),
+    phone: phone.input.value,
+    email: email.input.value.toLowerCase(),
+    number: number.input.value,
+  };
+  localStorage.setItem("formData", JSON.stringify(formData));
+  window.location.href = "/result.html";
 };
 
 // Função para exibir os resultados
 const formResponseResults = () => {
-  const formatName = JSON.stringify(inputData.name.trim());
-  const formatPhone = JSON.stringify(inputData.phone);
-  const formatEmail = JSON.stringify(inputData.email);
-  const formatnumber = JSON.stringify(inputData.number);
+  const inputData = JSON.parse(localStorage.getItem("formData"));
+
+  loaderContainer.style.display = "block";
+
+  const fullName = inputData.fullName.trim();
+  const phone = inputData.phone;
+  const email = inputData.email;
+  const number = inputData.number;
 
   if (inputData.number % 3 === 0) {
-    const firstName = formatName.split(" ")[0].replace(/["]/g, "");
-    question.innerHTML = `O número ${formatnumber} é divisível por 3:`;
+    loaderContainer.style.display = "none";
+    const firstName = fullName.split(" ")[0];
+    question.innerHTML = `O número ${number} é divisível por 3:`;
     content.innerHTML = `Primeiro Nome: <span style="text-transform: capitalize" >${firstName}</span>`;
   } else if (inputData.number % 5 === 0) {
-    const dddPhone = formatPhone.substring(2, 4);
-    question.innerHTML = `O número ${formatnumber} é divisível por 5:`;
+    const dddPhone = phone.substring(2, 4);
+    question.innerHTML = `O número ${number} é divisível por 5:`;
     content.innerHTML = `DDD do Telefone: <span>${dddPhone}</span>`;
   } else if (inputData.number % 7 === 0) {
-    const domainIndex = formatEmail.indexOf("@");
-    const domainLastIndex = formatEmail.lastIndexOf(".");
-    const emailDomain = formatEmail.substring(domainIndex + 1, domainLastIndex);
-    question.innerHTML = `O número ${formatnumber} é divisível por 7:`;
+    const domainIndex = email.indexOf("@");
+    const domainLastIndex = email.lastIndexOf(".");
+    const emailDomain = email.substring(domainIndex + 1, domainLastIndex);
+    question.innerHTML = `O número ${number} é divisível por 7:`;
     content.innerHTML = `Domínio do Email: <span>${emailDomain}</span>`;
   } else {
-    const nameLength = formatName.replace(/["]/g, "").split(" ").join("");
-    const emailLength = formatEmail.replace(/[^a-zA-Z0-9]/g, "");
-    question.innerHTML = `O número ${formatnumber} não é divisível por 3, por 5 ou por 7:`;
+    const nameLength = fullName.replace(/["]/g, "").split(" ").join("");
+    const emailLength = email.replace(/[^a-zA-Z0-9]/g, "");
+    question.innerHTML = `O número ${number} não é divisível por 3, por 5 ou por 7:`;
     content.innerHTML = `
     <ul>
       <li>Quantidade de letras do Nome Completo: </br><span>${nameLength.length}</span></li>
@@ -158,12 +189,19 @@ const formResponseResults = () => {
     </ul>
     `;
   }
+
+  loaderContainer.style.display = "none";
 };
 
 // Eventos
-inputName.addEventListener("input", fullNameValidation);
-inputPhone.addEventListener("input", phoneValidation);
-inputEmail.addEventListener("input", emailValidation);
-inputEmail.addEventListener("blur", checkEmailValidation);
-inputNumber.addEventListener("input", numberValidation);
-form.addEventListener("submit", saveFormResponses);
+if (fullName.input)
+  fullName.input.addEventListener("input", validateFullNameInputField);
+if (phone.input)
+  phone.input.addEventListener("input", validatePhoneNumberInputField);
+if (email.input) {
+  email.input.addEventListener("input", validateEmailInputField);
+  email.input.addEventListener("blur", checkValidateEmailInputField);
+}
+if (number.input)
+  number.input.addEventListener("input", validateNumberInputField);
+if (form) form.addEventListener("submit", saveFormResponses);

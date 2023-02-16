@@ -8,7 +8,7 @@
 
     <title>Formulário - Desafio Evolvy</title>
   </head>
-  <body>
+  <body id="form-page">
     <header>
       <h1>Formulário</h1>
     </header>
@@ -32,7 +32,7 @@
           </div>
           <div class="input-label input-phone-div">
             <label id="label-phone" for="phone">
-              Telefone (celular ou fixo)
+              Número de Telefone (celular ou fixo)
             </label>
             <input
               type="tel"
@@ -44,6 +44,7 @@
               maxlength="15"
               required
             />
+            <p class="text-error text-error-phone"></p>
           </div>
           <div class="input-label input-email-div">
             <label id="label-email" for="email"> Email </label>
