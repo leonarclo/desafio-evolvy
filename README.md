@@ -2,14 +2,10 @@
   Validação de Formulário - Desafio Evolvy
 </h1>
 
----
-
 <p align="center">
- <a href="#sobre-o-projeto">Sobre</a> •
- <a href="#funcionalidades">Funcionalidades</a> • 
+  <img src="https://img.shields.io/github/repo-size/leonarclo/desafio-evolvy">
+  <img src="https://img.shields.io/github/last-commit/leonarclo/desafio-evolvy">
 </p>
-
----
 
 ## 📑 Sobre o projeto
 
