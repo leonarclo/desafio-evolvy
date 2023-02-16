@@ -2,11 +2,6 @@
   Validação de Formulário - Desafio Evolvy
 </h1>
 
-<p align="center">
-  <img src="https://img.shields.io/github/repo-size/leonarclo/desafio-evolvy">
-  <img src="https://img.shields.io/github/last-commit/leonarclo/desafio-evolvy">
-</p>
-
 ---
 
 <p align="center">
